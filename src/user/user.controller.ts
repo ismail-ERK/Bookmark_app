@@ -1,3 +1,6 @@
+import { RolesGuard } from './../guard/roles.guard';
+import { RoleEnum } from './../enums/role.enum';
+import { Roles } from './../decorator/role.decorator';
 import { User } from '@prisma/client';
 import { GetUser } from './../decorator/get-user.decorator';
 import { JwtGuard } from './../guard/jwt.guard';
@@ -9,7 +12,8 @@ import { Request } from 'express';
 export class UserController {
   constructor(private userservice: UserService) {}
 
-  @UseGuards(JwtGuard)
+  @Roles(RoleEnum.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('/me')
   getCurrentUser(@GetUser('email') email: string) {
     //Request from ExpressJs
