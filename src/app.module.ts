@@ -1,3 +1,4 @@
+import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     BookmarkModule,
     PrismaModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    JwtModule.register({}),
   ],
   controllers: [AuthController, UserController, BookmarkController],
   providers: [AuthService, UserService, BookmarkService],

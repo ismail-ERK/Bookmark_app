@@ -24,7 +24,11 @@ export class AuthService {
     const verifyPassword = await argon.verify(user.hash, dto.password);
     if (!verifyPassword)
       throw new ForbiddenException('Credentials incorrect !!!!');
-    return user;
+    const { id, email } = user;
+    const token = await this.signToken(id, email);
+    return {
+      access_token: token,
+    };
   }
   async signup(dto: AuthDto) {
     try {
