@@ -24,8 +24,8 @@ export class AuthService {
     const verifyPassword = await argon.verify(user.hash, dto.password);
     if (!verifyPassword)
       throw new ForbiddenException('Credentials incorrect !!!!');
-    const { id, email } = user;
-    const token = await this.signToken(id, email);
+    const { id, email, role } = user;
+    const token = await this.signToken(id, email, role);
     return {
       access_token: token,
     };
@@ -52,10 +52,11 @@ export class AuthService {
     }
   }
 
-  async signToken(userId: number, email: string) {
+  async signToken(userId: number, email: string, role: string) {
     const payload = {
       sub: userId,
       email: email,
+      role: role
     };
     return this.jwt.sign(payload, {
       expiresIn: '15m',
